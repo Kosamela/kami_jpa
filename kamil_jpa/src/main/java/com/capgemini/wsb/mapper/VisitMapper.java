@@ -20,7 +20,7 @@ public final class VisitMapper {
     public static VisitEntity mapToEntity(final VisitTO visitTO) {
         return visitTO == null ? null : new VisitEntity()
                 .setId(visitTO.getId())
-                .setId(visitTO.getId())
+                .setDescription(visitTO.getDescription())
                 .setTime(visitTO.getTime())
                 .setDoctor(DoctorMapper.mapToEntity(visitTO.getDoctor()))
                 .setPatient(PatientMapper.mapToEntity(visitTO.getPatient()));

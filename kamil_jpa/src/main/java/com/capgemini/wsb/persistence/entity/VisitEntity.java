@@ -28,13 +28,24 @@ public class VisitEntity {
 		return id;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+	public LocalDateTime getTime() {
+		return time;
+	}
+
+	public DoctorEntity getDoctor() {
+		return doctor;
+	}
+
+	public PatientEntity getPatient() {
+		return patient;
+	}
+
 	public VisitEntity setId(Long id) {
 		this.id = id;
 		return this;
-	}
-
-	public String getDescription() {
-		return description;
 	}
 
 	public VisitEntity setDescription(String description) {
@@ -42,26 +53,20 @@ public class VisitEntity {
 		return this;
 	}
 
-	public LocalDateTime getTime() {
-		return time;
-	}
-
 	public VisitEntity setTime(LocalDateTime time) {
 		this.time = time;
 		return this;
 	}
 
-	public DoctorEntity getDoctor() {
-		return doctor;
-	}
-
 	public VisitEntity setDoctor(DoctorEntity doctor) {
+		if (this.doctor != null) {
+			this.doctor.getVisits().remove(this);
+		}
 		this.doctor = doctor;
+		if (doctor != null) {
+			doctor.getVisits().add(this);
+		}
 		return this;
-	}
-
-	public PatientEntity getPatient() {
-		return patient;
 	}
 
 	public VisitEntity setPatient(PatientEntity patient) {
@@ -70,3 +75,4 @@ public class VisitEntity {
 	}
 
 }
+
