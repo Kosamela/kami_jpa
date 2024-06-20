@@ -39,7 +39,7 @@ public class DoctorEntity {
 	)
 	private List<AddressEntity> address;
 
-	@OneToMany(mappedBy = "doctor", orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "doctor", orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<VisitEntity> visits;
 
 	public Long getId() {

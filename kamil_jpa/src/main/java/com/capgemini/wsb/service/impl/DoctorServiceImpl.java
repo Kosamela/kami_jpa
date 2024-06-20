@@ -4,34 +4,37 @@ import com.capgemini.wsb.dto.DoctorTO;
 import com.capgemini.wsb.persistence.dao.DoctorDao;
 import com.capgemini.wsb.persistence.entity.DoctorEntity;
 import com.capgemini.wsb.persistence.entity.VisitEntity;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DoctorServiceImpl {
+
     @Autowired
     private DoctorDao doctorDao;
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Transactional
-    public void updateDoctor(DoctorTO doctorTO) {
+    public void updateDoctorWithNewVisit(DoctorTO doctorTO, VisitEntity newVisit) {
         DoctorEntity doctor = doctorDao.find(doctorTO.getId());
-        modelMapper.map(doctorTO, doctor);
-        List<VisitEntity> visits = doctorTO.getVisits().stream()
-                .map(visitTO -> {
-                    VisitEntity visit = modelMapper.map(visitTO, VisitEntity.class);
-                    visit.setDoctor(doctor);
-                    return visit;
-                })
-                .collect(Collectors.toList());
-        doctor.setVisits(visits);
+        List<VisitEntity> visits = doctor.getVisits();
+        visits.add(newVisit);
+        newVisit.setDoctor(doctor);
         doctorDao.update(doctor);
     }
 
+    @Transactional
+    public void updateDoctorWithUpdatedVisit(DoctorTO doctorTO, VisitEntity updatedVisit) {
+        DoctorEntity doctor = doctorDao.find(doctorTO.getId());
+        List<VisitEntity> visits = doctor.getVisits();
+        visits.stream()
+                .filter(visit -> visit.getId().equals(updatedVisit.getId()))
+                .findFirst()
+                .ifPresent(existingVisit -> {
+                    existingVisit.setDescription(updatedVisit.getDescription());
+                });
+        doctorDao.update(doctor);
+    }
 }

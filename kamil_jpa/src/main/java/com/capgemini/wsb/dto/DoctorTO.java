@@ -2,6 +2,7 @@ package com.capgemini.wsb.dto;
 
 import com.capgemini.wsb.persistence.enums.Specialization;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class DoctorTO {
@@ -85,5 +86,21 @@ public class DoctorTO {
     public DoctorTO setSpecialization(Specialization specialization) {
         this.specialization = specialization;
         return this;
+    }
+
+    public AddressTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressTO address) {
+        this.address = address;
+    }
+
+    public List<VisitTO> getVisits() {
+        return visits;
+    }
+
+    public void setVisits(List<VisitTO> visits) {
+        this.visits = visits;
     }
 }
